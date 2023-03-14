@@ -5,7 +5,7 @@ public class Controller : MonoBehaviour
     public float moveSpeed = 5f; // movement speed
     public float rotateSpeed = 100f; // rotation speed
 
-    void Update()
+void Update()
     {
         // Get the horizontal and vertical input values
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -16,6 +16,7 @@ public class Controller : MonoBehaviour
         transform.Translate(movement * moveSpeed * Time.deltaTime);
 
         // Rotate the player based on the horizontal input
-        transform.Rotate(Vector3.up * horizontalInput * rotateSpeed * Time.deltaTime);
+        Quaternion targetRotation = Quaternion.Euler(0f, horizontalInput * rotateSpeed * Time.deltaTime, 0f);
+        transform.rotation *= targetRotation;
     }
 }
