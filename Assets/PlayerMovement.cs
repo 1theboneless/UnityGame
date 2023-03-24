@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float rotationTime = 0.1f;
     private float rotationVelocity;
     private bool canJump = true;
-
+    private bool isSprinting = false;
     public Transform mainCamera;
     public Rigidbody rb;
 
@@ -49,6 +49,15 @@ public class PlayerMovement : MonoBehaviour
                 canJump = true;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            isSprinting = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            isSprinting = false;
+        }
     }
 
     // FixedUpdate is called at a fixed interval and is synchronized with the physics engine
@@ -70,7 +79,14 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            rb.MovePosition(rb.position + moveDir.normalized * speed * Time.fixedDeltaTime);
+            if (isSprinting)
+            {
+                rb.MovePosition(rb.position + moveDir.normalized * speed * Time.fixedDeltaTime * 2f);
+            }
+            else
+            {
+                rb.MovePosition(rb.position + moveDir.normalized * speed * Time.fixedDeltaTime);
+            }
         }
     }
 
